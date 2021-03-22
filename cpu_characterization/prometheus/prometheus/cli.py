@@ -59,7 +59,7 @@ def metrics(host, token, interval, time, skip_namespaces, output):
     df = keys_df.join(values_df)
 
     if output is 'json':
-        df.to_json(sys.stdout)
+        df.to_json(sys.stdout, orient='index')
     elif output is 'yaml':
         sys.stdout = StringIO()
         y = yaml.load(df.to_json(sys.stdout), Loader=yaml.FullLoader)
