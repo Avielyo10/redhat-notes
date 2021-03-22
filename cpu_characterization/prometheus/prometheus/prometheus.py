@@ -1,10 +1,14 @@
-import requests
 from .validators import validate_time
+import requests
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class Prometheus():
     """
     Represents a Prometheus server we can query
     """
+
     def __init__(self, host, token):
         self.token = token
         self.host = host
@@ -40,6 +44,7 @@ class Prometheus():
         """
         Represents a metric result (mildly parsed)
         """
+
         def __init__(self, json):
             self.json = json
             self.name = json['metric']
