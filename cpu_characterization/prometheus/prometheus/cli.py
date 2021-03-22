@@ -55,8 +55,8 @@ def metrics(host, token, interval, time, skip_namespaces, output):
     keys_df = pd.DataFrame(keys)
     values_df = pd.DataFrame(combined_metrics.values())
     df = keys_df.join(values_df)
-    out = {
-        "csv": df.to_csv(sys.stdout),
-        "json": df.to_json(sys.stdout),
-    }
-    out[output]
+
+    if output is "json":
+        df.to_json(sys.stdout)
+    else:
+        df.to_csv(sys.stdout)

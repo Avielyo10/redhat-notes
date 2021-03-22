@@ -1,5 +1,6 @@
 from .validators import validate_time
 
+
 # Collect a set of metrics with a common function, interval, and time, combining them all into a single list.
 def collect_metrics(prometheus, base_metrics, fn=None, interval=None, time=None):
     time = validate_time(time)
