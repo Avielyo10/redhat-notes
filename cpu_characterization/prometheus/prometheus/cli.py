@@ -5,7 +5,9 @@ prome cli
 import click
 import sys
 import json
+import yaml
 import pandas as pd
+from io import StringIO
 
 from .prometheus import Prometheus
 from .util import *
@@ -34,7 +36,7 @@ Adding additional skip_namespaces will also exclude any pods that match from the
 @click.option('--interval', '-i', type=str, default="1h", show_default=True, help="")
 @click.option('--time', '-T', default=None, help="")
 @click.option('--skip-namespaces', '-s', default=None, multiple=True, show_default=True)
-@click.option('--output', '-o', type=click.Choice(['csv', 'json']), default='csv')
+@click.option('--output', '-o', type=click.Choice(['csv', 'json', 'yaml']), default='csv')
 def metrics(host, token, interval, time, skip_namespaces, output):
     prometheus = Prometheus(host, token)
 
@@ -56,7 +58,12 @@ def metrics(host, token, interval, time, skip_namespaces, output):
     values_df = pd.DataFrame(combined_metrics.values())
     df = keys_df.join(values_df)
 
-    if output is "json":
+    if output is 'json':
         df.to_json(sys.stdout)
+    elif output is 'yaml':
+        sys.stdout = StringIO()
+        y = yaml.load(df.to_json(sys.stdout), Loader=yaml.FullLoader)
+        sys.stdout = sys.__stdout__
+        print(y)
     else:
         df.to_csv(sys.stdout)

@@ -18,10 +18,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'Click',
-        'ansicolors',
         'PyYAML',
         'requests',
-        'validators'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
